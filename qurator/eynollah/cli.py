@@ -1,5 +1,6 @@
 import sys
 import click
+import time
 from ocrd_utils import initLogging, setOverrideLogLevel
 from qurator.eynollah.eynollah import Eynollah
 
@@ -126,6 +127,14 @@ from qurator.eynollah.eynollah import Eynollah
     type=click.Choice(['OFF', 'DEBUG', 'INFO', 'WARN', 'ERROR']),
     help="Override log level globally to this",
 )
+def check_dir_in(eynollah, dir_in):
+    list_of_img_dirs = os.listdir(dir_in)
+    if len(list_of_img_dirs) == 0:
+        print("Sleeping for 5 mins...")
+        time.sleep(300)
+        check_dir_in(eynollah, dir_in)
+    else:
+        eynollah.run()
 def main(
     image,
     out,
@@ -178,7 +187,8 @@ def main(
         light_version=light_version,
         ignore_page_extraction=ignore_page_extraction,
     )
-    eynollah.run()
+    check_dir_in(eynollah, dir_in)
+    #eynollah.run()
     #pcgts = eynollah.run()
     ##eynollah.writer.write_pagexml(pcgts)
 

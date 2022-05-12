@@ -133,8 +133,14 @@ class EynollahXmlWriter():
                 points_co += ' '
             coords.set_points(points_co[:-1])
 
-    def write_pagexml(self, pcgts):
-        out_fname = os.path.join(self.dir_out, self.image_filename_stem) + ".xml"
+    def write_pagexml(self, pcgts, img_file_year, img_dir_name):
+        out_year_dir_name = os.path.join(self.dir_out, img_file_year)
+        if not os.path.exists(out_year_dir_name):
+            os.mkdir(out_year_dir_name)
+        out_year_and_img_file_dir_name = os.path.join(self.dir_out, img_file_year, img_dir_name)
+        if not os.path.exists(out_year_and_img_file_dir_name):
+            os.mkdir(out_year_and_img_file_dir_name)
+        out_fname = os.path.join(self.dir_out, img_file_year, img_dir_name, self.image_filename_stem) + ".xml"
         self.logger.info("output filename: '%s'", out_fname)
         with open(out_fname, 'w') as f:
             f.write(to_xml(pcgts))
@@ -176,7 +182,7 @@ class EynollahXmlWriter():
                 points_co += str(int((found_polygons_text_region_img[mm][lmm,0,1] + page_coord[0]) / self.scale_y))
                 points_co += ' '
             img_region.get_Coords().set_points(points_co[:-1])
-            
+
         for mm in range(len(polygons_lines_to_be_written_in_xml)):
             sep_hor = SeparatorRegionType(id=counter.next_region_id, Coords=CoordsType())
             page.add_SeparatorRegion(sep_hor)
@@ -238,10 +244,10 @@ class EynollahXmlWriter():
 
         for mm in range(len(found_polygons_text_region_img)):
             page.add_ImageRegion(ImageRegionType(id=counter.next_region_id, Coords=CoordsType(points=self.calculate_polygon_coords(found_polygons_text_region_img[mm], page_coord))))
-            
+
         for mm in range(len(polygons_lines_to_be_written_in_xml)):
             page.add_SeparatorRegion(ImageRegionType(id=counter.next_region_id, Coords=CoordsType(points=self.calculate_polygon_coords(polygons_lines_to_be_written_in_xml[mm], [0 , 0, 0, 0]))))
-            
+
         for mm in range(len(found_polygons_tables)):
             page.add_TableRegion(TableRegionType(id=counter.next_region_id, Coords=CoordsType(points=self.calculate_polygon_coords(found_polygons_tables[mm], page_coord))))
 
