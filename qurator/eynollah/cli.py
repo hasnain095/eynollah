@@ -1,6 +1,5 @@
 import sys
 import click
-import time
 from ocrd_utils import initLogging, setOverrideLogLevel
 from qurator.eynollah.eynollah import Eynollah
 
@@ -16,6 +15,13 @@ from qurator.eynollah.eynollah import Eynollah
     "--out",
     "-o",
     help="directory to write output xml data",
+    type=click.Path(exists=True, file_okay=False),
+    required=True,
+)
+@click.option(
+    "--finalout",
+    "-fo",
+    help="directory to write final output data",
     type=click.Path(exists=True, file_okay=False),
     required=True,
 )
@@ -127,17 +133,10 @@ from qurator.eynollah.eynollah import Eynollah
     type=click.Choice(['OFF', 'DEBUG', 'INFO', 'WARN', 'ERROR']),
     help="Override log level globally to this",
 )
-def check_dir_in(eynollah, dir_in):
-    list_of_img_dirs = os.listdir(dir_in)
-    if len(list_of_img_dirs) == 0:
-        print("Sleeping for 5 mins...")
-        time.sleep(300)
-        check_dir_in(eynollah, dir_in)
-    else:
-        eynollah.run()
 def main(
     image,
     out,
+    finalout,
     dir_in,
     model,
     save_images,
@@ -169,6 +168,7 @@ def main(
     eynollah = Eynollah(
         image_filename=image,
         dir_out=out,
+        finalout=finalout,
         dir_in=dir_in,
         dir_models=model,
         dir_of_cropped_images=save_images,
@@ -187,8 +187,7 @@ def main(
         light_version=light_version,
         ignore_page_extraction=ignore_page_extraction,
     )
-    check_dir_in(eynollah, dir_in)
-    #eynollah.run()
+    eynollah.run()
     #pcgts = eynollah.run()
     ##eynollah.writer.write_pagexml(pcgts)
 

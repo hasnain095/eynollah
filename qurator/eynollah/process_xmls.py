@@ -65,7 +65,6 @@ def parse_xml(xmlfile):
 
     namespaces = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15"}
 
-    #import pdb; pdb.set_trace()
 
     root = tree.getroot()
 
@@ -105,10 +104,12 @@ def generate_output(path):
     return regions
 
 
-def process_xmls(xml_dir, img_file_year, img_dir_name):
+def process_xmls(xml_dir, finalout_dir, img_file_year, img_dir_name):
     onlyfiles = [f for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
     onlyfiles.sort()
-    output_path_year = os.path.join(FINAL_OUTPUT_DIR, img_file_year)
+    output_path_year = os.path.join(finalout_dir, img_file_year)
+    if not os.path.exists(output_path_year):
+        os.mkdir(output_path_year)
     output_path_year_and_img_dir_name = os.path.join(output_path_year, img_dir_name) + ".txt"
     with open(output_path_year_and_img_dir_name, "w+") as f:
         for index in range(0, len(onlyfiles)):
