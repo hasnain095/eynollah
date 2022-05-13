@@ -106,14 +106,13 @@ def generate_output(path):
 
 def process_xmls(xml_dir, finalout_dir, img_file_year, img_dir_name):
     onlyfiles = [f for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
-    onlyfiles.sort()
+    onlyfiles.sort(key=lambda x: int(x[4:-4]))
     output_path_year = os.path.join(finalout_dir, img_file_year)
     if not os.path.exists(output_path_year):
         os.mkdir(output_path_year)
     output_path_year_and_img_dir_name = os.path.join(output_path_year, img_dir_name) + ".txt"
     with open(output_path_year_and_img_dir_name, "w+") as f:
-        for index in range(0, len(onlyfiles)):
-            xml_file =  "page" + str(index) + ".xml"
+        for xml_file in onlyfiles:
             xml_file_path = xml_dir + "/" + xml_file
             if not os.path.exists(xml_file_path):
                 print('The image path specified does not exist')
