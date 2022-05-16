@@ -2906,7 +2906,7 @@ class Eynollah:
                     self.ls_imgs.remove("final.txt")
 
                 for img_name in self.ls_imgs:
-                    out_fname = os.path.join(self.dir_out, img_file_year, img_dir_name, Path(Path(img_name).name).stem)) + ".xml"
+                    out_fname = os.path.join(self.dir_out, img_file_year, img_dir_name, Path(Path(img_name).name).stem) + ".xml"
                     if os.path.exists(out_fname):
                         self.logger.info("Image %s of %s already processed, Skipping", img_name, img_dir)
                         continue
