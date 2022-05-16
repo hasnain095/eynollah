@@ -2892,11 +2892,13 @@ class Eynollah:
                 self.logger.info("Sleeping for 300 sec ")
                 time.sleep(300)
                 continue
+            else:
+                self.list_of_img_dirs.sort(key=lambda x: int(x[0:3]))
             for img_dir in self.list_of_img_dirs:
                 self.logger.info("Processing image dir %s ", img_dir)
                 os.listdir(os.path.join(self.dir_in, img_dir))
                 self.ls_imgs = os.listdir(os.path.join(self.dir_in, img_dir))
-                img_file_year, img_dir_name = img_dir.split("___")
+                priority, img_file_year, img_dir_name = img_dir.split("___")
                 if not "final.txt" in self.ls_imgs:
                     self.logger.info("Processing img dir %s, but detected all images not generated. Skipping", img_dir)
                     self.logger.info("Sleeping for 300 sec ")
