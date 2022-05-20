@@ -3185,7 +3185,7 @@ class Eynollah:
                         destination = os.path.join(os.path.dirname(self.dir_in), "issue_images")
                         dest = shutil.move(source, destination)
                         self.logger.info("Moved dir %s to issue_images folder", img_dir)
-                        continue
+                        break
 
                 if self.dir_in:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
