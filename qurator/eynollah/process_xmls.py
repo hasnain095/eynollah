@@ -217,7 +217,7 @@ def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name)
     onlyfiles = [f for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
     onlyfiles.sort(key=lambda x: int(x[4:-4]))
     output_path_folder = os.path.join(finalout_dir, img_folder)
-    if not os.path.exists(output_path_folder)
+    if not os.path.exists(output_path_folder):
     output_path_year = os.path.join(finalout_dir, img_folder, img_file_year)
     if not os.path.exists(output_path_year):
         os.mkdir(output_path_year)
