@@ -15,16 +15,51 @@ def get_region_coords(regions, root, namespaces):
     region_coords = list()
     region_coords_list = list()
     region_names_list = list()
+    region_type_list = list()
 
     # loop over regions in order
     for region in regions:
         region_ele = root.find(f".//pc:TextRegion[@id='{region}']", namespaces)
         region_type = region_ele.attrib["type"]
-
-        if region_type == "paragraph" or region_type == "header":
             # text_line_eles = region_ele.findall(".//pc:TextLine", namespaces)
-            coords_ele = region_ele.find("pc:Coords", namespaces)
+        coords_ele = region_ele.find("pc:Coords", namespaces)
 
+        coords_points = coords_ele.attrib["points"]
+
+        # text_line_coords = list()
+        x_list = list()
+        y_list = list()
+
+        coords_points_x_y = coords_points.split(" ")
+
+        # loop over each text line in paragraph
+        for x_y_coord in coords_points_x_y:
+
+            x_y = x_y_coord.split(",")
+            x = x_y[0]
+            y = x_y[1]
+
+            x_list.append(int(x))
+            y_list.append(int(y))
+
+        min_x = min(x_list)
+        max_x = max(x_list)
+        min_y = min(y_list)
+        max_y = max(y_list)
+
+        region_coord = [[min_x, min_y], [max_x, min_y], [max_x, max_y], [min_x, max_y]]
+        region_coord_tuple = [(min_x, min_y), (max_x, min_y), (max_x, max_y), (min_x, max_y)]
+        region_names_list.append(region)
+        region_coords_list.append(region_coord)
+        region_coords.append(region_coord)
+        region_type_list.append("text")
+
+    region_ele_tables = root.findall(f".//pc:TableRegion", namespaces)
+
+    for region_ele_table in region_ele_tables:
+        region = region_ele_table.attrib["id"]
+        if region_ele_table:
+            coords_ele = region_ele_table.find("pc:Coords", namespaces)
             coords_points = coords_ele.attrib["points"]
 
             # text_line_coords = list()
@@ -53,9 +88,83 @@ def get_region_coords(regions, root, namespaces):
             region_names_list.append(region)
             region_coords_list.append(region_coord)
             region_coords.append(region_coord)
+            region_type_list.append("table")
+
+    region_ele_images = root.findall(f".//pc:ImageRegion", namespaces)
+
+    for region_ele_image in region_ele_images:
+        region = region_ele_image.attrib["id"]
+        if region_ele_image:
+            coords_ele = region_ele_image.find("pc:Coords", namespaces)
+            coords_points = coords_ele.attrib["points"]
+
+            # text_line_coords = list()
+            x_list = list()
+            y_list = list()
+
+            coords_points_x_y = coords_points.split(" ")
+
+            # loop over each text line in paragraph
+            for x_y_coord in coords_points_x_y:
+
+                x_y = x_y_coord.split(",")
+                x = x_y[0]
+                y = x_y[1]
+
+                x_list.append(int(x))
+                y_list.append(int(y))
+
+            min_x = min(x_list)
+            max_x = max(x_list)
+            min_y = min(y_list)
+            max_y = max(y_list)
+
+            region_coord = [[min_x, min_y], [max_x, min_y], [max_x, max_y], [min_x, max_y]]
+            region_coord_tuple = [(min_x, min_y), (max_x, min_y), (max_x, max_y), (min_x, max_y)]
+            region_names_list.append(region)
+            region_coords_list.append(region_coord)
+            region_coords.append(region_coord)
+            region_type_list.append("image")
+
+
+    region_ele_seps = root.findall(f".//pc:SeparatorRegion", namespaces)
+
+    for region_ele_sep in region_ele_seps:
+        region = region_ele_sep.attrib["id"]
+        if region_ele_sep:
+            coords_ele = region_ele_sep.find("pc:Coords", namespaces)
+            coords_points = coords_ele.attrib["points"]
+
+            # text_line_coords = list()
+            x_list = list()
+            y_list = list()
+
+            coords_points_x_y = coords_points.split(" ")
+
+            # loop over each text line in paragraph
+            for x_y_coord in coords_points_x_y:
+
+                x_y = x_y_coord.split(",")
+                x = x_y[0]
+                y = x_y[1]
+
+                x_list.append(int(x))
+                y_list.append(int(y))
+
+            min_x = min(x_list)
+            max_x = max(x_list)
+            min_y = min(y_list)
+            max_y = max(y_list)
+
+            region_coord = [[min_x, min_y], [max_x, min_y], [max_x, max_y], [min_x, max_y]]
+            region_coord_tuple = [(min_x, min_y), (max_x, min_y), (max_x, max_y), (min_x, max_y)]
+            region_names_list.append(region)
+            region_coords_list.append(region_coord)
+            region_coords.append(region_coord)
+            region_type_list.append("separator")
 
     # region_dict = {k[0]: k[1] for k in zip(region_names_list, region_coords)}
-    return region_names_list, region_coords_list, region_coords
+    return region_names_list, region_coords_list, region_coords, region_type_list
 
 
 def parse_xml(xmlfile):
@@ -79,10 +188,10 @@ def parse_xml(xmlfile):
         for ele in ordering_list:
             regions.append(ele.attrib["regionRef"])
 
-        region_names_list, region_coords_list, region_coords =  get_region_coords(regions, root, namespaces)
-        return img_width, img_height, region_names_list, region_coords_list, region_coords
+        region_names_list, region_coords_list, region_coords, region_type_list =  get_region_coords(regions, root, namespaces)
+        return img_width, img_height, region_names_list, region_coords_list, region_coords, region_type_list
     else:
-        return img_width, img_height, list(), list(), list()
+        return img_width, img_height, list(), list(), list(), list()
 
 
 def generate_output(path):
@@ -91,10 +200,10 @@ def generate_output(path):
         print('The xml path specified does not exist')
         sys.exit()
     with open(path_to_xml, "r") as f:
-        img_width, img_height, region_names_list,region_coords_list, region_coords = parse_xml(f)
+        img_width, img_height, region_names_list,region_coords_list, region_coords, region_type_list = parse_xml(f)
     region_list = list()
-    for i, (region_name, region_coord) in enumerate(zip(region_names_list, region_coords_list)):
-                region_dict = {"region": region_name, "index": i, "region_coords": region_coord}
+    for i, (region_name, region_coord, region_type) in enumerate(zip(region_names_list, region_coords_list, region_type_list)):
+                region_dict = {"region": region_name, "index": i, "region_coords": region_coord, "region_type": region_type}
                 region_list.append(region_dict)
     regions = {
                 "width": img_width,
@@ -104,10 +213,12 @@ def generate_output(path):
     return regions
 
 
-def process_xmls(xml_dir, finalout_dir, img_file_year, img_dir_name):
+def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name):
     onlyfiles = [f for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
     onlyfiles.sort(key=lambda x: int(x[4:-4]))
-    output_path_year = os.path.join(finalout_dir, img_file_year)
+    output_path_folder = os.path.join(finalout_dir, img_folder)
+    if not os.path.exists(output_path_folder)
+    output_path_year = os.path.join(finalout_dir, img_folder, img_file_year)
     if not os.path.exists(output_path_year):
         os.mkdir(output_path_year)
     output_path_year_and_img_dir_name = os.path.join(output_path_year, img_dir_name) + ".txt"

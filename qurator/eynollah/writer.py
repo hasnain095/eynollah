@@ -133,14 +133,17 @@ class EynollahXmlWriter():
                 points_co += ' '
             coords.set_points(points_co[:-1])
 
-    def write_pagexml(self, pcgts, img_file_year, img_dir_name):
-        out_year_dir_name = os.path.join(self.dir_out, img_file_year)
+    def write_pagexml(self, pcgts, img_file_year, img_folder, img_dir_name):
+        out_folder_dir_name = os.path.join(self.dir_out, img_folder)
+        if not os.path.exists(out_folder_dir_name):
+            os.mkdir(out_folder_dir_name)
+        out_year_dir_name = os.path.join(self.dir_out, img_folder, img_file_year)
         if not os.path.exists(out_year_dir_name):
             os.mkdir(out_year_dir_name)
-        out_year_and_img_file_dir_name = os.path.join(self.dir_out, img_file_year, img_dir_name)
+        out_year_and_img_file_dir_name = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
         if not os.path.exists(out_year_and_img_file_dir_name):
             os.mkdir(out_year_and_img_file_dir_name)
-        out_fname = os.path.join(self.dir_out, img_file_year, img_dir_name, self.image_filename_stem) + ".xml"
+        out_fname = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name, self.image_filename_stem) + ".xml"
         self.logger.info("output filename: '%s'", out_fname)
         with open(out_fname, 'w') as f:
             f.write(to_xml(pcgts))

@@ -2890,7 +2890,7 @@ class Eynollah:
             self.list_of_img_dirs = os.listdir(self.dir_in)
             if len(self.list_of_img_dirs) == 0:
                 self.logger.info("Sleeping for 300 sec ")
-                time.sleep(300)
+                time.sleep(60)
                 continue
             else:
                 self.list_of_img_dirs.sort(key=lambda x: int(x[0:3]))
@@ -2898,11 +2898,11 @@ class Eynollah:
                 self.logger.info("Processing image dir %s ", img_dir)
                 os.listdir(os.path.join(self.dir_in, img_dir))
                 self.ls_imgs = os.listdir(os.path.join(self.dir_in, img_dir))
-                priority, img_file_year, img_dir_name = img_dir.split("___")
+                priority, img_file_year, img_folder, img_dir_name = img_dir.split("___")
                 if not "final.txt" in self.ls_imgs:
                     self.logger.info("Processing img dir %s, but detected all images not generated. Skipping", img_dir)
                     self.logger.info("Sleeping for 300 sec ")
-                    time.sleep(300)
+                    time.sleep(60)
                     continue
                 else:
                     self.ls_imgs.remove("final.txt")
@@ -3177,7 +3177,7 @@ class Eynollah:
                             pcgts = self.writer.build_pagexml_no_full_layout(txt_con_org, page_coord, order_text_new, id_of_texts_tot, all_found_texline_polygons, all_box_coord, polygons_of_images, polygons_of_marginals, all_found_texline_polygons_marginals, all_box_coord_marginals, slopes, slopes_marginals, cont_page, polygons_lines_xml, contours_tables)
                             self.logger.info("Job done in %.1fs", time.time() - t0)
                             ##return pcgts
-                        self.writer.write_pagexml(pcgts, img_file_year, img_dir_name)
+                        self.writer.write_pagexml(pcgts, img_file_year,img_folder, img_dir_name)
                     except Exception:
                         self.logger.info("Failed to process image %s of dir %s", img_name, img_dir)
                         self.logger.info("Moving dir %s", img_dir)
@@ -3189,11 +3189,11 @@ class Eynollah:
 
                 if self.dir_in:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
-                    out_year_dir_name = os.path.join(self.dir_out, img_file_year)
-                    out_year_and_img_file_dir_name = os.path.join(self.dir_out, img_file_year, img_dir_name)
-                    process_xmls(out_year_and_img_file_dir_name, self.finalout, img_file_year, img_dir_name)
+                    out_year_dir_name = os.path.join(self.dir_out, img_folder, img_file_year)
+                    out_year_and_img_file_dir_name = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
+                    process_xmls(out_year_and_img_file_dir_name, self.finalout, img_file_year, img_folder, img_dir_name)
                     source = os.path.join(self.dir_in,img_dir)
-                    destination = os.path.join(os.path.dirname(self.dir_in), "completed_images")
+                    destination = os.path.join(os.path.dirname(self.dir_in), "completed_esg_images")
                     dest = shutil.move(source, destination)
                     self.logger.info("Moved folder %s to %s", source, destination)
 
