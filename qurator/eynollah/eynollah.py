@@ -3193,7 +3193,7 @@ class Eynollah:
                     out_year_and_img_file_dir_name = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
                     process_xmls(out_year_and_img_file_dir_name, self.finalout, img_file_year, img_folder, img_dir_name)
                     source = os.path.join(self.dir_in,img_dir)
-                    destination = os.path.join(os.path.dirname(self.dir_in), "completed_esg_images")
+                    destination = os.path.join(os.path.dirname(self.dir_in), "completed_images")
                     dest = shutil.move(source, destination)
                     self.logger.info("Moved folder %s to %s", source, destination)
 
