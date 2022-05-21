@@ -3178,8 +3178,9 @@ class Eynollah:
                             self.logger.info("Job done in %.1fs", time.time() - t0)
                             ##return pcgts
                         self.writer.write_pagexml(pcgts, img_file_year,img_folder, img_dir_name)
-                    except Exception:
+                    except Exception as e:
                         self.logger.info("Failed to process image %s of dir %s", img_name, img_dir)
+                        self.logger.error(e)
                         # self.logger.info("Moving dir %s", img_dir)
                         # source = os.path.join(self.dir_in,img_dir)
                         # destination = os.path.join(os.path.dirname(self.dir_in), "issue_images")
