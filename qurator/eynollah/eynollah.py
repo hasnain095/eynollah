@@ -3181,12 +3181,12 @@ class Eynollah:
                     except Exception as e:
                         self.logger.info("Failed to process image %s of dir %s", img_name, img_dir)
                         self.logger.error(e)
-                        # self.logger.info("Moving dir %s", img_dir)
-                        # source = os.path.join(self.dir_in,img_dir)
-                        # destination = os.path.join(os.path.dirname(self.dir_in), "issue_images")
-                        # dest = shutil.move(source, destination)
-                        # self.logger.info("Moved dir %s to issue_images folder", img_dir)
-                        continue
+                        self.logger.info("Moving dir %s", img_dir)
+                        source = os.path.join(self.dir_in,img_dir)
+                        destination = os.path.join(os.path.dirname(self.dir_in), "issue_images")
+                        dest = shutil.move(source, destination)
+                        self.logger.info("Moved dir %s to issue_images folder", img_dir)
+                        break
 
                 if self.dir_in:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
