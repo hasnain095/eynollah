@@ -228,13 +228,14 @@ def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name,
     if not os.path.exists(output_path_year):
         os.mkdir(output_path_year)
     output_path_year_and_img_dir_name = os.path.join(output_path_year, img_dir_name) + ".txt"
+    import pdb; pdb.set_trace()
     with open(output_path_year_and_img_dir_name, "w+") as f:
         for page_no in range(0, total_number_images):
             xml_file = "page" + str(page_no) + ".xml"
             xml_file_path = xml_dir + "/" + xml_file
             if not os.path.exists(xml_file_path):
                 print('The xml path specified does not exist, writing empty region')
-                f.write(json.dumps(empty_regions))
+                f.write(json.dumps(empty_region))
                 f.write("\n")
             else:
                 f.write(json.dumps(generate_output(xml_file_path)))

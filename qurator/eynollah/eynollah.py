@@ -2900,7 +2900,7 @@ class Eynollah:
 
                 self.logger.info("Processing image dir %s ", img_dir)
                 self.ls_imgs = os.listdir(os.path.join(self.dir_in, img_dir))
-                total_number_images = len(self.ls_imgs)
+
                 priority, img_file_year, img_folder, img_dir_name = img_dir.split("___")
                 if not "final.txt" in self.ls_imgs:
                     self.logger.info("Processing img dir %s, but detected all images not generated. Skipping", img_dir)
@@ -2909,6 +2909,7 @@ class Eynollah:
                     continue
                 else:
                     self.ls_imgs.remove("final.txt")
+                total_number_images = len(self.ls_imgs)
                 for img_name in self.ls_imgs:
                     import pdb; pdb.set_trace()
                     self.logger.info("Processing image %s ", img_name)
@@ -3183,5 +3184,10 @@ class Eynollah:
                 #self.logger.info("Job done in %.1fs", time.time() - t0)
                 if self.dir_in:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
-                    batch_xml_output_path = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
-                    process_xmls(batch_xml_output_path, self.finalout, img_file_year, img_folder, img_dir_name, total_number_images)
+                    source = os.path.join(self.dir_in,img_dir)
+                    if os.path.exists(source):
+                        batch_xml_output_path = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
+                        process_xmls(batch_xml_output_path, self.finalout, img_file_year, img_folder, img_dir_name, total_number_images)
+                        destination = os.path.join(os.path.dirname(self.dir_in), "completed_images")
+                        dest = shutil.move(source, destination)
+                        self.logger.info("Moved folder %s to %s", source, destination)
