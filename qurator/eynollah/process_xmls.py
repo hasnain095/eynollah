@@ -234,7 +234,7 @@ def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name,
             xml_file_path = xml_dir + "/" + xml_file
             if not os.path.exists(xml_file_path):
                 print('The xml path specified does not exist, writing empty region')
-                f.write(json.dumps(empty_regions)
+                f.write(json.dumps(empty_regions))
                 f.write("\n")
             else:
                 f.write(json.dumps(generate_output(xml_file_path)))

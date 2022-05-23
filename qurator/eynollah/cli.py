@@ -19,6 +19,13 @@ from qurator.eynollah.eynollah import Eynollah
     required=True,
 )
 @click.option(
+    "--finalout",
+    "-fo",
+    help="directory to write final output data",
+    type=click.Path(exists=True, file_okay=False),
+    required=True,
+)
+@click.option(
     "--dir_in",
     "-di",
     help="directory of images",
@@ -129,6 +136,7 @@ from qurator.eynollah.eynollah import Eynollah
 def main(
     image,
     out,
+    finalout,
     dir_in,
     model,
     save_images,
@@ -160,6 +168,7 @@ def main(
     eynollah = Eynollah(
         image_filename=image,
         dir_out=out,
+        finalout=finalout,
         dir_in=dir_in,
         dir_models=model,
         dir_of_cropped_images=save_images,
