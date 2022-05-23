@@ -30,6 +30,7 @@ from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 from keras.backend import set_session
+from .process_xmls import process_xmls
 
 from .utils.contour import (
     filter_contours_area_of_image,
@@ -2894,9 +2895,11 @@ class Eynollah:
                 img_file_year = None
                 img_folder = None
                 img_dir_name = None
+                total_number_images = None
 
                 self.logger.info("Processing image dir %s ", img_dir)
                 self.ls_imgs = os.listdir(os.path.join(self.dir_in, img_dir))
+                total_number_images = len(self.ls_imgs)
                 priority, img_file_year, img_folder, img_dir_name = img_dir.split("___")
                 for img_name in self.ls_imgs:
                     self.logger.info("Processing image %s ", img_name)
@@ -3168,4 +3171,4 @@ class Eynollah:
                 if self.dir_in:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
                     batch_xml_output_path = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
-                    process_xmls(batch_xml_output_path, self.finalout, img_file_year, img_folder, img_dir_name)
+                    process_xmls(batch_xml_output_path, self.finalout, img_file_year, img_folder, img_dir_name, total_number_images)
