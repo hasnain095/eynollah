@@ -2870,6 +2870,7 @@ class Eynollah:
             self.ls_imgs = [1]
         
         for img_name in self.ls_imgs:
+            print(img_name,'img_name')
             t0 = time.time()
             if self.dir_in:
                 self.reset_file_name_dir(os.path.join(self.dir_in,img_name))
@@ -2897,7 +2898,6 @@ class Eynollah:
                 #self.logger.info('cont_page %s', cont_page)
             
             if not num_col:
-                print('buraya galir??')
                 self.logger.info("No columns detected, outputting an empty PAGE-XML")
                 pcgts = self.writer.build_pagexml_no_full_layout([], page_coord, [], [], [], [], [], [], [], [], [], [], cont_page, [], [])
                 self.logger.info("Job done in %.1fs", time.time() - t1)
