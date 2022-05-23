@@ -8,6 +8,7 @@ tool to extract table form data from alto xml data
 
 import math
 import os
+import shutil
 import sys
 import time
 import warnings
@@ -2911,7 +2912,6 @@ class Eynollah:
                     self.ls_imgs.remove("final.txt")
                 total_number_images = len(self.ls_imgs)
                 for img_name in self.ls_imgs:
-                    import pdb; pdb.set_trace()
                     self.logger.info("Processing image %s ", img_name)
                     out_fname = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name, Path(Path(img_name).name).stem) + ".xml"
                     if os.path.exists(out_fname):
