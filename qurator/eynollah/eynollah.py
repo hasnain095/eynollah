@@ -2910,7 +2910,12 @@ class Eynollah:
                 else:
                     self.ls_imgs.remove("final.txt")
                 for img_name in self.ls_imgs:
+                    import pdb; pdb.set_trace()
                     self.logger.info("Processing image %s ", img_name)
+                    out_fname = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name, Path(Path(img_name).name).stem) + ".xml"
+                    if os.path.exists(out_fname):
+                        self.logger.info("Image %s of %s already processed, Skipping", img_name, img_dir)
+                        continue
                     t0 = time.time()
                     if self.dir_in:
                         self.reset_file_name_dir(os.path.join(self.dir_in,img_dir,img_name))
