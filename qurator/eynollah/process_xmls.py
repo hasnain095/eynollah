@@ -214,6 +214,11 @@ def generate_output(path):
 
 
 def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name, total_number_images):
+    empty_region = {
+                "width": 0,
+                "height": 0,
+                "regions": []
+            }
     onlyfiles = [f for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
     onlyfiles.sort(key=lambda x: int(x[4:-4]))
     output_path_folder = os.path.join(finalout_dir, img_folder)
@@ -224,11 +229,13 @@ def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name,
         os.mkdir(output_path_year)
     output_path_year_and_img_dir_name = os.path.join(output_path_year, img_dir_name) + ".txt"
     with open(output_path_year_and_img_dir_name, "w+") as f:
-        for page_no in range(1, total_number_images):
+        for page_no in range(0, total_number_images):
+            xml_file = "page" + str(page_no) + ".xml"
             xml_file_path = xml_dir + "/" + xml_file
             if not os.path.exists(xml_file_path):
-                print('The image path specified does not exist')
-                sys.exit()
-
-            f.write(json.dumps(generate_output(xml_file_path)))
-            f.write("\n")
+                print('The xml path specified does not exist, writing empty region')
+                f.write(json.dumps(empty_regions)
+                f.write("\n")
+            else:
+                f.write(json.dumps(generate_output(xml_file_path)))
+                f.write("\n")
