@@ -2949,7 +2949,7 @@ class Eynollah:
                         pcgts = self.writer.build_pagexml_no_full_layout([], page_coord, [], [], [], [], [], [], [], [], [], [], cont_page, [], [])
                         self.logger.info("Job done in %.1fs", time.time() - t1)
                         if self.dir_in:
-                            elf.writer.write_pagexml(pcgts, img_file_year,img_folder, img_dir_name)
+                            self.writer.write_pagexml(pcgts, img_file_year,img_folder, img_dir_name)
                             continue
                         else:
                             return pcgts
