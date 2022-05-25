@@ -2888,10 +2888,13 @@ class Eynollah:
                     page = str(page_no) + "\n"
                     self.logger.info("Line 0 is %s", lines[0])
                     self.logger.info("Page is %s", page)
-                    if len(lines) == 1 and lines[0] == page:
-                        self.logger.info("Line %s", lines[0])
-                        self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
-                        return True
+                    if len(lines) == 1
+                        if lines[0] == page:
+                            self.logger.info("Line %s", lines[0])
+                            self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
+                            return True
+                        else:
+                            return False
                     else:
                         last_record = lines[-1]
                         second_last_record = lines[-2]
