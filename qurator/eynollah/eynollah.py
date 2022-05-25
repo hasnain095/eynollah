@@ -2885,7 +2885,9 @@ class Eynollah:
                 self.logger.info("Number of lines in file %s ", str(len(lines)))
                 if len(lines) > 0:
                     self.logger.info("Number of lines > 0")
-                    if len(lines) == 1 and lines[0] == str(page_no):
+                    page = str(page_no) + "\n"
+                    if len(lines) == 1 and lines[0] == page:
+                        self.logger.info("Line %s", lines[0])
                         self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
                         return True
                     else:
