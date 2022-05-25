@@ -216,10 +216,6 @@ class Eynollah:
             else:
                 self.ls_imgs = []
 
-        self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
-        _f = open(self.processing_status_file, "w+")
-        _f.close()
-
 
     def _cache_images(self, image_filename=None, image_pil=None):
         ret = {}
@@ -2877,26 +2873,31 @@ class Eynollah:
         return model
 
     def clear_process_status_file(self):
-        _f = open(self.processing_status_file, 'w')
+        _f = open(self.processing_status_file, 'w+')
         _f.close()
         self.logger.info("Cleared processing_status_file")
 
 
     def should_skip(self, page_no):
-        with open(self.processing_status_file, 'r') as f:
-            lines = f.readlines()
-            self.logger.info("Number of lines in file %s ", str(len(lines)))
-            if len(lines) > 0:
-                self.logger.info("Number of lines > 0")
-                if len(lines) == 1 and lines[0] == str(page_no):
-                    self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
-                    return True
+        try:
+            with open(self.processing_status_file, 'r') as f:
+                lines = f.readlines()
+                self.logger.info("Number of lines in file %s ", str(len(lines)))
+                if len(lines) > 0:
+                    self.logger.info("Number of lines > 0")
+                    if len(lines) == 1 and lines[0] == str(page_no):
+                        self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
+                        return True
+                    else:
+                        self.logger.info("Number of lines > 1, not skipping")
+                        return False
                 else:
-                    self.logger.info("Number of lines > 1, not skipping")
+                    self.logger.info("Number of lines == 0")
                     return False
-            else:
-                self.logger.info("Number of lines == 0")
-                return False
+        except FileNotFoundError:
+            self.logger.info("File not found processing_status_file, creating")
+            _f = open(self.processing_status_file, "w+")
+            _f.close()
 
     def add_file_status(self, page_no):
         _f = open(self.processing_status_file, 'a')
@@ -2910,6 +2911,7 @@ class Eynollah:
         Get image and scales, then extract the page of scanned image
         """
         self.logger.debug("enter run")
+        self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
 
         t0_tot = time.time()
 
