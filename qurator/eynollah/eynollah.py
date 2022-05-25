@@ -2912,6 +2912,7 @@ class Eynollah:
         """
         self.logger.debug("enter run")
         self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
+        self.logger.info("Processing status file %s", self.processing_status_file)
 
         t0_tot = time.time()
 
