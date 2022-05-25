@@ -2891,8 +2891,14 @@ class Eynollah:
                         self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
                         return True
                     else:
-                        self.logger.info("Number of lines > 1, not skipping")
-                        return False
+                        last_record = lines[-1]
+                        second_last_record = lines[-2]
+                        if last_record == second_last_record:
+                            self.logger.info("Last two records are same, skipping")
+                            return True
+                        else:
+                            self.logger.info("Number of lines > 1, not skipping")
+                            return False
                 else:
                     self.logger.info("Number of lines == 0")
                     return False
