@@ -216,9 +216,9 @@ class Eynollah:
             else:
                 self.ls_imgs = []
 
-            self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
-            _f = open(self.processing_status_file, "w+")
-            _f.close()
+        self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
+        _f = open(self.processing_status_file, "w+")
+        _f.close()
 
 
     def _cache_images(self, image_filename=None, image_pil=None):
