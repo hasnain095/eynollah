@@ -2887,7 +2887,7 @@ class Eynollah:
         self.logger.info("Cleared processing_status_file")
 
 
-    def should_skip(page_no):
+    def should_skip(self, page_no):
         with open(self.processing_status_file, 'r') as f:
             lines = f.readlines()
             self.logger.info("Number of lines in file %s ", str(len(lines)))
@@ -2903,7 +2903,7 @@ class Eynollah:
                 self.logger.info("Number of lines == 0")
                 return False
 
-    def add_file_status(page_no):
+    def add_file_status(self, page_no):
         _f = open(self.processing_status_file, 'a')
         _f.write(str(page_no))
         _f.write("\n")
