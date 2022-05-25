@@ -2876,12 +2876,7 @@ class Eynollah:
 
         return model
 
-    def write_processing_status(page_no):
-        with open(os.path.join(os.getcwd(), "processing_status_file.txt"), "a+") as f:
-            f.write(str(page_no))
-            f.write("\n")
-
-    def clear_process_status_file():
+    def clear_process_status_file(self):
         _f = open(self.processing_status_file, 'w')
         _f.close()
         self.logger.info("Cleared processing_status_file")
@@ -2963,7 +2958,7 @@ class Eynollah:
                         self.clear_process_status_file()
                         continue
                     else:
-                        self.write_processing_status(img_name)
+                        self.add_file_status(img_name)
 
 
                     t0 = time.time()
