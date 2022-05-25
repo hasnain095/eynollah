@@ -3240,3 +3240,4 @@ class Eynollah:
                         destination = os.path.join(os.path.dirname(self.dir_in), "completed_images")
                         dest = shutil.move(source, destination)
                         self.logger.info("Moved folder %s to %s", source, destination)
+                        self.clear_process_status_file()
