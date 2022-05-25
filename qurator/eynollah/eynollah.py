@@ -216,6 +216,10 @@ class Eynollah:
             else:
                 self.ls_imgs = []
 
+            self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
+            _f = open(self.processing_status_file, "w+")
+            _f.close()
+
 
     def _cache_images(self, image_filename=None, image_pil=None):
         ret = {}
@@ -2872,6 +2876,40 @@ class Eynollah:
 
         return model
 
+    def write_processing_status(page_no):
+        with open(os.path.join(os.getcwd(), "processing_status_file.txt"), "a+") as f:
+            f.write(str(page_no))
+            f.write("\n")
+
+    def clear_process_status_file():
+        _f = open(self.processing_status_file, 'w')
+        _f.close()
+        self.logger.info("Cleared processing_status_file")
+
+
+    def should_skip(page_no):
+        with open(self.processing_status_file, 'r') as f:
+            lines = f.readlines()
+            self.logger.info("Number of lines in file %s ", str(len(lines)))
+            if len(lines) > 0:
+                self.logger.info("Number of lines > 0")
+                if len(lines) == 1 and lines[0] == str(page_no):
+                    self.logger.info("Number of lines == 1 and page_no found %s, Skipping",str(page_no))
+                    return True
+                else:
+                    self.logger.info("Number of lines > 1, not skipping")
+                    return False
+            else:
+                self.logger.info("Number of lines == 0")
+                return False
+
+    def add_file_status(page_no):
+        _f = open(self.processing_status_file, 'a')
+        _f.write(str(page_no))
+        _f.write("\n")
+        _f.close()
+        self.logger.info("Added status to processing_status_file for %s", str(page_no))
+
     def run(self):
         """
         Get image and scales, then extract the page of scanned image
@@ -2913,10 +2951,21 @@ class Eynollah:
                 total_number_images = len(self.ls_imgs)
                 for img_name in self.ls_imgs:
                     self.logger.info("Processing image %s ", img_name)
+
                     out_fname = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name, Path(Path(img_name).name).stem) + ".xml"
                     if os.path.exists(out_fname):
                         self.logger.info("Image %s of %s already processed, Skipping", img_name, img_dir)
                         continue
+
+
+                    self.logger.info("Checking should_skip for%s ", img_name)
+                    if self.should_skip(img_name):
+                        self.clear_process_status_file()
+                        continue
+                    else:
+                        self.write_processing_status(img_name)
+
+
                     t0 = time.time()
                     if self.dir_in:
                         self.reset_file_name_dir(os.path.join(self.dir_in,img_dir,img_name))

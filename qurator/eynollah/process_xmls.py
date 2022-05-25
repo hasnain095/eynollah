@@ -217,7 +217,7 @@ def process_xmls(xml_dir, finalout_dir, img_file_year, img_folder, img_dir_name,
     empty_region = {
                 "width": 0,
                 "height": 0,
-                "regions": []
+                "regions": [{"type": "crashed",  "index": 0, "region": "crashed", "region_coords": [[0, 0], [0, 0], [0, 0], [0, 0]] }],
             }
     onlyfiles = [f for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
     onlyfiles.sort(key=lambda x: int(x[4:-4]))
