@@ -21,7 +21,10 @@ def get_region_coords(regions, root, namespaces):
     for region in regions:
         region_ele = root.find(f".//pc:TextRegion[@id='{region}']", namespaces)
         region_type = region_ele.attrib["type"]
-            # text_line_eles = region_ele.findall(".//pc:TextLine", namespaces)
+
+        if region_type is None:
+            region_type = "text"
+
         coords_ele = region_ele.find("pc:Coords", namespaces)
 
         coords_points = coords_ele.attrib["points"]
@@ -52,7 +55,7 @@ def get_region_coords(regions, root, namespaces):
         region_names_list.append(region)
         region_coords_list.append(region_coord)
         region_coords.append(region_coord)
-        region_type_list.append("text")
+        region_type_list.append(region_type)
 
     region_ele_tables = root.findall(f".//pc:TableRegion", namespaces)
 
