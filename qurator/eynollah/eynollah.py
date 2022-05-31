@@ -32,6 +32,7 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 from keras.backend import set_session
 from .process_xmls import process_xmls
+import subprocess
 
 from .utils.contour import (
     filter_contours_area_of_image,
@@ -3252,3 +3253,7 @@ class Eynollah:
                         dest = shutil.move(source, destination)
                         self.logger.info("Moved folder %s to %s", source, destination)
                         self.clear_process_status_file()
+                        tracking_code, uploaded_file = img_dir_name.split("__")
+                        result = subprocess.run(["/home/ubuntu/spirit_do_reprocess.sh", tracking_code], stderr=subprocess.PIPE, text=True)
+                        self.logger.info("Do reprocess result: %s", result)
+
