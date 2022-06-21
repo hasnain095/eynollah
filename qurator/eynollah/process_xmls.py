@@ -6,7 +6,7 @@ import os
 import sys
 from collections import defaultdict
 import xml.etree.ElementTree as ET
-from xml.etree.ElementTree importr ParseError
+from xml.etree.ElementTree import ParseError
 
 FINAL_OUTPUT_DIR = os.path.dirname(os.getcwd()) + "/output/data/international_data/original_uploaded_files/ar"
 
