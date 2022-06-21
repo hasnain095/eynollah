@@ -6,6 +6,7 @@ import os
 import sys
 from collections import defaultdict
 import xml.etree.ElementTree as ET
+from xml.etree.ElementTree importr ParseError
 
 FINAL_OUTPUT_DIR = os.path.dirname(os.getcwd()) + "/output/data/international_data/original_uploaded_files/ar"
 
@@ -171,30 +172,33 @@ def get_region_coords(regions, root, namespaces):
 
 
 def parse_xml(xmlfile):
+    try:
+        # create element tree object
+        tree = ET.parse(xmlfile)
 
-    # create element tree object
-    tree = ET.parse(xmlfile)
-
-    namespaces = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15"}
+        namespaces = {"pc": "http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15"}
 
 
-    root = tree.getroot()
+        root = tree.getroot()
 
-    regions = []
+        regions = []
 
-    ordering_list = root.find(".//pc:OrderedGroup", namespaces)
-    page_detail = root.find(".//pc:Page", namespaces)
+        ordering_list = root.find(".//pc:OrderedGroup", namespaces)
+        page_detail = root.find(".//pc:Page", namespaces)
 
-    img_width = page_detail.attrib["imageWidth"]
-    img_height = page_detail.attrib["imageHeight"]
-    if ordering_list:
-        for ele in ordering_list:
-            regions.append(ele.attrib["regionRef"])
+        img_width = page_detail.attrib["imageWidth"]
+        img_height = page_detail.attrib["imageHeight"]
+        if ordering_list:
+            for ele in ordering_list:
+                regions.append(ele.attrib["regionRef"])
 
-        region_names_list, region_coords_list, region_coords, region_type_list =  get_region_coords(regions, root, namespaces)
-        return img_width, img_height, region_names_list, region_coords_list, region_coords, region_type_list
-    else:
-        return img_width, img_height, list(), list(), list(), list()
+            region_names_list, region_coords_list, region_coords, region_type_list =  get_region_coords(regions, root, namespaces)
+            return img_width, img_height, region_names_list, region_coords_list, region_coords, region_type_list
+        else:
+            return img_width, img_height, list(), list(), list(), list()
+    except ParseError as e:
+        print("Unable to parse xml, skipping")
+        return 0, 0, list(), list(), list(), list()
 
 
 def generate_output(path):
