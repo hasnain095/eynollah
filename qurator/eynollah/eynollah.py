@@ -2940,6 +2940,7 @@ class Eynollah:
         Get image and scales, then extract the page of scanned image
         """
         self.logger.debug("enter run")
+        import pdb; pdb.set_trace()
         self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
         self.logger.info("Processing status file %s", self.processing_status_file)
 
