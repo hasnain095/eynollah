@@ -33,6 +33,7 @@ from scipy.ndimage import gaussian_filter1d
 from keras.backend import set_session
 from .process_xmls import process_xmls
 import subprocess
+from .image_generator import generate_images_of_pdf
 
 from .utils.contour import (
     filter_contours_area_of_image,
@@ -2920,6 +2921,20 @@ class Eynollah:
         _f.close()
         self.logger.info("Added status to processing_status_file for %s", str(page_no))
 
+    def get_doc_to_process():
+        result = subprocess.run(["/home/ubuntu/spirit_get_document_to_process.sh"], stdout=subprocess.PIPE)
+        row = result.stdout.decode('utf-8')
+        self.logger.info("Get doc to process: %s", row)
+        return row
+
+    def set_doc_started_processing(document_id, tracking_code):
+        result = subprocess.run(["/home/ubuntu/spirit_insert_doc_to_process.sh", document_id, tracking_code], stdout=subprocess.PIPE)
+        self.logger.info("set document processing: %s", result.stdout.decode('utf-8'))
+
+    def update_doc_processed(pages, tracking_code):
+        result = subprocess.run(["/home/ubuntu/spirit_update_doc.sh", pages, tracking_code], stdout=subprocess.PIPE)
+        self.logger.info("set document processing: %s", result.stdout.decode('utf-8'))
+
     def run(self):
         """
         Get image and scales, then extract the page of scanned image
@@ -2936,6 +2951,13 @@ class Eynollah:
         self.logger.info("Processing parent dir %s ", self.dir_in)
 
         while True:
+            d_id, tracking_code, document_id, document_date uploaded_file, document_type =  self.get_doc_to_process().split(",")
+            self.set_doc_started_processing(document_id, tracking_code)
+
+            already_generated = generate_images_of_pdf(tracking_code, uploaded_file, document_date, document_type)
+
+
+
             self.list_of_img_dirs = os.listdir(self.dir_in)
             self.list_of_img_dirs = sorted(self.list_of_img_dirs, key = lambda x: x.split("___"))
             if len(self.list_of_img_dirs) == 0:
@@ -3256,4 +3278,5 @@ class Eynollah:
                         tracking_code, uploaded_file = img_dir_name.split("__")
                         result = subprocess.run(["/home/ubuntu/spirit_do_reprocess.sh", tracking_code], stderr=subprocess.PIPE, text=True)
                         self.logger.info("Do reprocess result: %s", result)
+                        self.update_doc_processed(total_number_images, tracking_code)
 
