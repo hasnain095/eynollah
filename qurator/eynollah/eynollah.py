@@ -2935,6 +2935,11 @@ class Eynollah:
         result = subprocess.run(["/home/ubuntu/spirit_update_doc.sh", pages, tracking_code], stdout=subprocess.PIPE)
         self.logger.info("set document processing: %s", result.stdout.decode('utf-8'))
 
+    def update_doc_processed_failed(self, tracking_code):
+        pages = '"-1"'
+        result = subprocess.run(["/home/ubuntu/spirit_update_doc.sh", pages, tracking_code], stdout=subprocess.PIPE)
+        self.logger.info("set document processing: %s", result.stdout.decode('utf-8'))
+
     def run(self):
         """
         Get image and scales, then extract the page of scanned image
@@ -2954,15 +2959,16 @@ class Eynollah:
             d_id, tracking_code, document_id, document_date, uploaded_file, document_type =  self.get_doc_to_process().split("\n")[1].split(",")
             self.set_doc_started_processing(document_id, tracking_code)
 
-            already_generated = generate_images_of_pdf(tracking_code, uploaded_file, document_date, document_type)
+            is_generated = generate_images_of_pdf(tracking_code, uploaded_file, document_date, document_type)
 
-
+            if not is_generated:
+                self.update_doc_processed_failed(tracking_code)
 
             self.list_of_img_dirs = os.listdir(self.dir_in)
             self.list_of_img_dirs = sorted(self.list_of_img_dirs, key = lambda x: x.split("___"))
             if len(self.list_of_img_dirs) == 0:
-                self.logger.info("Sleeping for 30 sec ")
-                time.sleep(30)
+                self.logger.info("Sleeping for 10 sec ")
+                time.sleep(10)
                 continue
             for img_dir in self.list_of_img_dirs:
                 priority = None
