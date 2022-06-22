@@ -36,6 +36,10 @@ def generate_images(pdf_file_path, folder, year):
 
 def generate_images_of_pdf(tracking_code, uploaded_file, date, doc_type):
     try:
+        tracking_code = tracking_code.replace('"', "")
+        uploaded_file =uploaded_file.replace('"', "")
+        date = date.replace('"', "")
+        doc_type = doc_type.replace('"', "")
         _folder = doc_type.lower().replace(" ", "_")
         _year = date[0:4]
         file_path =  "/mnt/storm/spirit_intl_files/original_uploaded_files/" + _folder + "/" +_year + "/" + tracking_code + "__" + uploaded_file
