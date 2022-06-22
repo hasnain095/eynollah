@@ -2940,7 +2940,6 @@ class Eynollah:
         Get image and scales, then extract the page of scanned image
         """
         self.logger.debug("enter run")
-        import pdb; pdb.set_trace()
         self.processing_status_file = os.path.join(os.getcwd(), "processing_status_file.txt")
         self.logger.info("Processing status file %s", self.processing_status_file)
 
@@ -3270,7 +3269,6 @@ class Eynollah:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
                     source = os.path.join(self.dir_in,img_dir)
                     if os.path.exists(source):
-                        import pdb; pdb.set_trace()
                         batch_xml_output_path = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
                         process_xmls(batch_xml_output_path, self.finalout, img_file_year, img_folder, img_dir_name, total_number_images)
                         destination = os.path.join(os.path.dirname(self.dir_in), "completed_images")
