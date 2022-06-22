@@ -3281,5 +3281,5 @@ class Eynollah:
                         tracking_code, uploaded_file = img_dir_name.split("__")
                         result = subprocess.run(["/home/ubuntu/spirit_do_reprocess.sh", tracking_code], stderr=subprocess.PIPE, text=True)
                         self.logger.info("Do reprocess result: %s", result)
-                        self.update_doc_processed(total_number_images, tracking_code)
+                        self.update_doc_processed(str(total_number_images), tracking_code)
 
