@@ -3272,6 +3272,7 @@ class Eynollah:
                     self.logger.info("All jobs done in %.1fs", time.time() - t0_tot)
                     source = os.path.join(self.dir_in,img_dir)
                     if os.path.exists(source):
+                        import pdb; pdb.set_trace()
                         batch_xml_output_path = os.path.join(self.dir_out, img_folder, img_file_year, img_dir_name)
                         process_xmls(batch_xml_output_path, self.finalout, img_file_year, img_folder, img_dir_name, total_number_images)
                         destination = os.path.join(os.path.dirname(self.dir_in), "completed_images")
@@ -3281,5 +3282,7 @@ class Eynollah:
                         tracking_code, uploaded_file = img_dir_name.split("__")
                         result = subprocess.run(["/home/ubuntu/spirit_do_reprocess.sh", tracking_code], stderr=subprocess.PIPE, text=True)
                         self.logger.info("Do reprocess result: %s", result)
-                        self.update_doc_processed(str(total_number_images), tracking_code)
+                        tracking_code = '"' + tracking_code + '"'
+                        total_number_images = '"' + str(total_number_images) + '"'
+                        self.update_doc_processed(total_number_images, tracking_code)
 
