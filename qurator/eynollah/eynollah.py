@@ -2952,7 +2952,9 @@ class Eynollah:
         self.logger.info("Processing parent dir %s ", self.dir_in)
 
         while True:
-            d_id, tracking_code, document_id, document_date, uploaded_file, document_type =  self.get_doc_to_process().split("\n")[1].split(",")
+            #d_id, tracking_code, document_id, document_date, uploaded_file, document_type =  self.get_doc_to_process().split("\n")[1].split(",")
+            sample = '6705547,"866fddf153dde4d0a37bfc73b57d0f94",82070144,"2021-12-07","82070144.pdf","Corporate Governance Report"'
+            d_id, tracking_code, document_id, document_date, uploaded_file, document_type = sample.split(",")
             self.set_doc_started_processing(document_id, tracking_code)
 
             already_generated = generate_images_of_pdf(tracking_code, uploaded_file, document_date, document_type)
