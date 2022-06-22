@@ -2921,17 +2921,17 @@ class Eynollah:
         _f.close()
         self.logger.info("Added status to processing_status_file for %s", str(page_no))
 
-    def get_doc_to_process():
+    def get_doc_to_process(self):
         result = subprocess.run(["/home/ubuntu/spirit_get_document_to_process.sh"], stdout=subprocess.PIPE)
         row = result.stdout.decode('utf-8')
         self.logger.info("Get doc to process: %s", row)
         return row
 
-    def set_doc_started_processing(document_id, tracking_code):
+    def set_doc_started_processing(self, document_id, tracking_code):
         result = subprocess.run(["/home/ubuntu/spirit_insert_doc_to_process.sh", document_id, tracking_code], stdout=subprocess.PIPE)
         self.logger.info("set document processing: %s", result.stdout.decode('utf-8'))
 
-    def update_doc_processed(pages, tracking_code):
+    def update_doc_processed(self, pages, tracking_code):
         result = subprocess.run(["/home/ubuntu/spirit_update_doc.sh", pages, tracking_code], stdout=subprocess.PIPE)
         self.logger.info("set document processing: %s", result.stdout.decode('utf-8'))
 
