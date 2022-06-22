@@ -2956,13 +2956,15 @@ class Eynollah:
         self.logger.info("Processing parent dir %s ", self.dir_in)
 
         while True:
-            d_id, tracking_code, document_id, document_date, uploaded_file, document_type =  self.get_doc_to_process().split("\n")[1].split(",")
-            self.set_doc_started_processing(document_id, tracking_code)
+            self.list_of_img_dirs = os.listdir(self.dir_in)
+            if len(self.list_of_img_dirs) == 0:
+                d_id, tracking_code, document_id, document_date, uploaded_file, document_type =  self.get_doc_to_process().split("\n")[1].split(",")
+                self.set_doc_started_processing(document_id, tracking_code)
 
-            is_generated = generate_images_of_pdf(tracking_code, uploaded_file, document_date, document_type)
+                is_generated = generate_images_of_pdf(tracking_code, uploaded_file, document_date, document_type)
 
-            if not is_generated:
-                self.update_doc_processed_failed(tracking_code)
+                if not is_generated:
+                    self.update_doc_processed_failed(tracking_code)
 
             self.list_of_img_dirs = os.listdir(self.dir_in)
             self.list_of_img_dirs = sorted(self.list_of_img_dirs, key = lambda x: x.split("___"))
