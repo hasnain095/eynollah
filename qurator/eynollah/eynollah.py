@@ -2901,7 +2901,7 @@ class Eynollah:
                         for previous, current in zip(lines, lines[1:]):
                             self.logger.info("Previous: " + str(previous))
                             self.logger.info("Current: " + str(current))
-                            if previous == current:
+                            if previous == current and previous == page:
                                 self.logger.info("Consective two records are same, skipping")
                                 return True
                         self.logger.info("Consective records not found, not skipping")
