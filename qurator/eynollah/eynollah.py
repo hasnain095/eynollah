@@ -2899,6 +2899,8 @@ class Eynollah:
                             return False
                     else:
                         for previous, current in zip(lines, lines[1:]):
+                            self.logger.info("Previous: " + str(previous))
+                            self.logger.info("Current: " + str(current))
                             if previous == current:
                                 self.logger.info("Consective two records are same, skipping")
                                 return True
