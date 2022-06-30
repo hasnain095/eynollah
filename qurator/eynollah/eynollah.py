@@ -2969,11 +2969,6 @@ class Eynollah:
             self.list_of_img_dirs = os.listdir(self.dir_in)
             self.list_of_img_dirs = sorted(self.list_of_img_dirs, key = lambda x: x.split("___"))
             if len(self.list_of_img_dirs) == 0:
-                self.update_doc_processed_failed(tracking_code)
-                try:
-                    shutil.rmtree(self.dir_in)
-                except OSError as e:
-                    self.logger.info("Error: %s - %s." % (e.filename, e.strerror))
                 self.logger.info("Sleeping for 10 sec ")
                 time.sleep(10)
                 continue
@@ -2990,9 +2985,12 @@ class Eynollah:
                 priority, img_folder, img_file_year, img_dir_name = img_dir.split("___")
                 if not "final.txt" in self.ls_imgs:
                     self.logger.info("Processing img dir %s, but detected all images not generated. Skipping", img_dir)
-                    self.logger.info("Sleeping for 30 sec ")
-                    time.sleep(30)
-                    continue
+                    self.update_doc_processed_failed(tracking_code)
+                    try:
+                        shutil.rmtree(self.dir_in)
+                    except OSError as e:
+                        self.logger.info("Error: %s - %s." % (e.filename, e.strerror))
+                    break
                 else:
                     self.ls_imgs.remove("final.txt")
                 total_number_images = len(self.ls_imgs)
