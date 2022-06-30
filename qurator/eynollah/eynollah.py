@@ -2983,9 +2983,10 @@ class Eynollah:
                 self.ls_imgs = os.listdir(os.path.join(self.dir_in, img_dir))
 
                 priority, img_folder, img_file_year, img_dir_name = img_dir.split("___")
+                t_code = img_dir_name.split("__")[0]
                 if not "final.txt" in self.ls_imgs:
-                    self.logger.info("Processing img dir %s, but detected all images not generated. Skipping", img_dir)
-                    self.update_doc_processed_failed(tracking_code)
+                    self.logger.info("Processing img dir %s, but detected all images not generated. Skipping, tracking code %s", img_dir, t_code)
+                    self.update_doc_processed_failed(t_code)
                     try:
                         os.rmdir(img_dir)
                     except OSError as e:
