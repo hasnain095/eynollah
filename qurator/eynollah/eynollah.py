@@ -2987,14 +2987,14 @@ class Eynollah:
                     self.logger.info("Processing img dir %s, but detected all images not generated. Skipping", img_dir)
                     self.update_doc_processed_failed(tracking_code)
                     try:
-                        shutil.rmtree(self.dir_in)
+                        shutil.rmtree(img_dir)
                     except OSError as e:
                         self.logger.info("Error: %s - %s." % (e.filename, e.strerror))
                     break
                 else:
                     self.ls_imgs.remove("final.txt")
                 total_number_images = len(self.ls_imgs)
-                self.ls_imgs = sorted(self.ls_imgs)
+                self.ls_imgs = sorted(self.ls_imgs, key = lambda x: x[4:-4])
                 for img_name in self.ls_imgs:
                     self.logger.info("Processing image %s ", img_name)
 
