@@ -2991,6 +2991,7 @@ class Eynollah:
                         os.rmdir(os.path.join(self.dir_in, img_dir))
                     except OSError as e:
                         self.logger.info("Error: " + str(e))
+                        shutil.rmtree(os.path.join(self.dir_in, img_dir))
                     break
                 else:
                     self.ls_imgs.remove("final.txt")
