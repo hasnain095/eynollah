@@ -2904,9 +2904,8 @@ class Eynollah:
                             if previous == current:
                                 self.logger.info("Consective two records are same, skipping")
                                 return True
-                            else:
-                                self.logger.info("Consective records not found, not skipping")
-                                return False
+                        self.logger.info("Consective records not found, not skipping")
+                        return False
                 else:
                     self.logger.info("Number of lines == 0")
                     return False
