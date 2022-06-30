@@ -2898,14 +2898,13 @@ class Eynollah:
                         else:
                             return False
                     else:
-                        last_record = lines[-1]
-                        second_last_record = lines[-2]
-                        if last_record == second_last_record:
-                            self.logger.info("Last two records are same, skipping")
-                            return True
-                        else:
-                            self.logger.info("Number of lines > 1, not skipping")
-                            return False
+                        for previous, current in zip(lines, lines[1:]):
+                            if previous == current:
+                                self.logger.info("Consective two records are same, skipping")
+                                return True
+                            else:
+                                self.logger.info("Consective records not found, not skipping")
+                                return False
                 else:
                     self.logger.info("Number of lines == 0")
                     return False
