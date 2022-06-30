@@ -2994,6 +2994,7 @@ class Eynollah:
                 else:
                     self.ls_imgs.remove("final.txt")
                 total_number_images = len(self.ls_imgs)
+                self.ls_imgs = sorted(self.ls_imgs)
                 for img_name in self.ls_imgs:
                     self.logger.info("Processing image %s ", img_name)
 
