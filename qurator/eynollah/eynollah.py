@@ -3008,7 +3008,7 @@ class Eynollah:
 
                     self.logger.info("Checking should_skip for%s ", img_name)
                     if self.should_skip(img_name):
-                        self.clear_process_status_file()
+                        #self.clear_process_status_file()
                         continue
                     else:
                         self.add_file_status(img_name)
