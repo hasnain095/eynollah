@@ -2988,7 +2988,7 @@ class Eynollah:
                     self.logger.info("Processing img dir %s, but detected all images not generated. Skipping, tracking code %s", img_dir, t_code)
                     self.update_doc_processed_failed(t_code)
                     try:
-                        os.rmdir(img_dir)
+                        os.rmdir(os.path.join(self.dir_in, img_dir))
                     except OSError as e:
                         self.logger.info("Error: " + str(e))
                     break
